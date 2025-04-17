@@ -2,11 +2,15 @@
   "name": "@tastytrade/api",
   "version": "5.0.0",
   "type": "module",
-  "module": "dist/tastytrade-api.js",
-  "types": "dist/tastytrade-api.d.ts",
+  "main": "./dist/cjs/tastytrade-api.js",
+  "module": "./dist/esm/tastytrade-api.js",
+  "types": "./dist/types/tastytrade-api.d.ts",
   "exports": {
-    "types": "./dist/tastytrade-api.d.ts",
-    "default": "./dist/tastytrade-api.js"
+    ".": {
+      "types": "./dist/types/tastytrade-api.d.ts",
+      "import": "./dist/esm/tastytrade-api.js",
+      "require": "./dist/cjs/tastytrade-api.js"
+    }
   },
   "repository": "https://github.com/tastytrade/tastytrade-api-js",
   "license": "MIT",
@@ -16,7 +20,9 @@
     "node": ">=20.0.0"
   },
   "scripts": {
-    "build": "tsc -p tsconfig.json",
+    "build": "npm run build:esm && npm run build:cjs",
+    "build:esm": "tsc -p tsconfig.esm.json",
+    "build:cjs": "tsc -p tsconfig.cjs.json",
     "test": "jest -i --restoreMocks",
     "unit-test": "node --experimental-vm-modules ./node_modules/.bin/jest tests/unit",
     "integration-test": "node --experimental-vm-modules ./node_modules/.bin/jest tests/integration",
