@@ -28,7 +28,7 @@ export type ClientConfig = {
   sessionToken?: string
 }
 
-class TastytradeClient {
+export default class TastytradeClient {
   public readonly logger: TastytradeLogger
   public readonly httpClient: TastytradeHttpClient
 
@@ -78,5 +78,3 @@ export { MarketDataStreamer, MarketDataSubscriptionType, type MarketDataListener
 export { AccountStreamer, STREAMER_STATE, type Disposer, type StreamerStateObserver }
 export { TastytradeLogger, LogLevel }
 export type { Logger }
-
-export default TastytradeClient
