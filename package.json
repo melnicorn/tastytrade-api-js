@@ -1,18 +1,24 @@
 {
-  "name": "@tastytrade/api",
-  "version": "5.0.0",
-  "type": "module",
-  "main": "./dist/cjs/tastytrade-api.js",
-  "module": "./dist/esm/tastytrade-api.js",
-  "types": "./dist/types/tastytrade-api.d.ts",
+  "name": "@slowclap/tastytrade-api",
+  "version": "0.0.3",
+  "main": "cjs-wrapper.cjs",
+  "module": "./dist/tastytrade-api.js",
+  "types": "./dist/tastytrade-api.d.ts",
   "exports": {
-    ".": {
-      "types": "./dist/types/tastytrade-api.d.ts",
-      "import": "./dist/esm/tastytrade-api.js",
-      "require": "./dist/cjs/tastytrade-api.js"
+    "import": {
+      "types": "./dist/tastytrade-api.d.ts",
+      "import": "./dist/tastytrade-api.js"
+    },
+    "require": {
+      "types": "./dist/tastytrade-api.d.cts",
+      "require": "./cjs-wrapper.cjs"
     }
   },
-  "repository": "https://github.com/tastytrade/tastytrade-api-js",
+  "files": [
+    "dist"
+  ],
+  "type": "module",
+  "repository": "https://github.com/melnicorn/tastytrade-api",
   "license": "MIT",
   "description": "Typescript impelementation of tastytrade api",
   "engines": {
@@ -20,15 +26,15 @@
     "node": ">=20.0.0"
   },
   "scripts": {
-    "build": "npm run build:esm && npm run build:cjs",
-    "build:esm": "tsc -p tsconfig.esm.json",
-    "build:cjs": "tsc -p tsconfig.cjs.json",
+    "build": "tsup",
     "test": "jest -i --restoreMocks",
     "unit-test": "node --experimental-vm-modules ./node_modules/.bin/jest tests/unit",
     "integration-test": "node --experimental-vm-modules ./node_modules/.bin/jest tests/integration",
     "lint": "eslint lib/** tests/**",
     "prepublishOnly": "npm run unit-test && npm run build",
-    "postpack": "git tag -a $npm_package_version -m $npm_package_version && git push origin $npm_package_version"
+    "pack": "rm -rf ./*.tgz && npm run build && npm pack --pack-destination .",
+    "postpack": "if [ \"$npm_lifecycle_event\" = \"postpublish\" ]; then git tag v$npm_package_version; fi",
+    "postpublish": "git tag -a $npm_package_version -m $npm_package_version && git push origin $npm_package_version"
   },
   "dependencies": {
     "@types/lodash": "^4.14.182",
@@ -52,6 +58,7 @@
     "jest": "^29.7.0",
     "nock": "^13.5.4",
     "ts-jest": "^29.1.2",
+    "tsup": "^8.4.0",
     "typescript": "^5.4.2"
   }
 }
